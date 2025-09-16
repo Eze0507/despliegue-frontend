@@ -1,1 +1,1 @@
-web: node node_modules/.bin/serve -s dist
+web: npm start
