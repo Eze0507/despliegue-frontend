@@ -1,15 +1,14 @@
 // src/api/cargoApi.jsx
 import axios from "axios";
 
-// Instancia de Axios para todas las llamadas al backend
+// Instancia de Axios igual que en usersApi
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // usa la variable de entorno
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
-// Interceptor para añadir el token JWT a cada petición
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access");
+    const token = localStorage.getItem('access');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -17,6 +16,15 @@ apiClient.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+export const fetchAllCargos = async () => {
+  try {
+    const response = await apiClient.get('/cargos/');
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al obtener los cargos.');
+  }
+};
 
 export const createCargo = async (cargoData) => {
   try {
@@ -51,4 +59,3 @@ export const deleteCargo = async (id) => {
     throw new Error('Error al eliminar el cargo.');
   }
 };
-
