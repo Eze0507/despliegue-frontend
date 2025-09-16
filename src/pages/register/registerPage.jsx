@@ -1,6 +1,6 @@
 // src/pages/register/RegisterPage.jsx
 import React, { useState } from "react";
-import RegisterForm from "./registerForm";
+import RegisterForm from "./RegisterForm";
 import { useRegister } from "../../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
 
