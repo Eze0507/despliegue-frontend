@@ -2,7 +2,8 @@ import axios from "axios";
 
 async function login(username, password) {
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/auth/token/", {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const res = await axios.post(`${apiUrl}/auth/token/`, {
       username,
       password,
     });

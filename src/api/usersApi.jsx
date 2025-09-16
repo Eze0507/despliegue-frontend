@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Creamos una instancia de Axios que se usará para todas las llamadas a la API.
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Interceptor para añadir el token de autenticación a cada solicitud.
