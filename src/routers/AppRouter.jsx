@@ -6,7 +6,7 @@ import UserPage from "../pages/usuario/UserPage.jsx";
 import CargoPage from "../pages/cargo/cargoPage.jsx";
 import HomePage from "../pages/home/HomePage.jsx";
 import LoginPage from "../pages/login/loginPage.jsx"; // 👈 importar login
-import RegisterPage from "../pages/register/RegisterPage.jsx";
+import RegisterPage from "../pages/register/registerPage.jsx";
 import EmpleadoPage from "../pages/empleados/EmpleadoPage.jsx";
 import RolePage from "../pages/roles/rolePage.jsx";
 import ClientePage from "../pages/cliente/ClientePage.jsx";
