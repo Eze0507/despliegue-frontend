@@ -2,8 +2,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000";
-
 export function useRegister() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,6 +11,9 @@ export function useRegister() {
     setError("");
 
     try {
+      // 🔹 Usa la variable de entorno (sirve en local y producción)
+      const apiUrl = import.meta.env.VITE_API_URL;
+
       // Validación básica en el frontend
       if (!username || !email || !password || !password2) {
         setError("Todos los campos son obligatorios");
@@ -31,7 +32,7 @@ export function useRegister() {
 
       // Enviar datos al backend
       const res = await axios.post(
-        `${API_BASE}/api/register/`,
+        `${apiUrl}register/`,
         {
           username: username.trim(),
           email: email.trim(),
@@ -49,7 +50,7 @@ export function useRegister() {
       return true;
     } catch (err) {
       console.error("❌ Error en registro:", err.response?.data);
-      
+
       // Manejo de errores más específico
       if (err.response?.data) {
         if (typeof err.response.data === "string") {

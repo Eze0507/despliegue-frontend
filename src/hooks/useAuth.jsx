@@ -12,7 +12,12 @@ function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
     return JSON.parse(jsonPayload);
   } catch (e) {
     console.error("Error al decodificar el token:", e);
@@ -27,25 +32,30 @@ export function useAuth() {
   const login = async (username, password) => {
     setLoading(true);
     setError("");
+
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/auth/token/", {
+      // 🔹 Usa la variable de entorno (sirve en local y producción)
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      const response = await axios.post(`${apiUrl}auth/token/`, {
         username,
         password,
       });
+
       const { access, refresh } = response.data;
 
       // 1. Guardar tokens en localStorage
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
-      
+
       // 2. Guardar el nombre de usuario directamente del input
       localStorage.setItem("username", username);
       console.log(`✅ Nombre de usuario '${username}' guardado en localStorage.`);
-      
+
       // 3. Decodificar el token para obtener el rol si está disponible
       const userData = parseJwt(access);
       console.log("Datos decodificados del token:", userData);
-      
+
       if (userData && userData.role) {
         localStorage.setItem("userRole", userData.role);
       } else if (userData && userData.groups && userData.groups.length > 0) {
@@ -54,6 +64,7 @@ export function useAuth() {
 
       return true; // login exitoso
     } catch (err) {
+      console.error("Error en login:", err.response?.data || err.message);
       setError("Usuario o contraseña incorrectos");
       return false;
     } finally {
@@ -63,3 +74,4 @@ export function useAuth() {
 
   return { login, loading, error };
 }
+
